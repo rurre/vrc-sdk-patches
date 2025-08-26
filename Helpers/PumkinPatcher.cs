@@ -16,6 +16,7 @@ namespace Pumkin.VrcSdkPatches
             var harmony = new Harmony(HarmonyId);
             
             AvatarThumbnailNamePatch.Patch(harmony);
+            AutoCopyrightAgreementPatch.Patch(harmony);
             
             AssemblyReloadEvents.beforeAssemblyReload += () => { harmony.UnpatchAll(HarmonyId); };
         }
