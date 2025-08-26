@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Reflection.Emit;
 using HarmonyLib;
 using UnityEngine;
@@ -14,17 +15,55 @@ namespace Pumkin.VrcSdkPatches
     {
         const string DefaultAvatarName = "Avatar";
 
+        static MethodInfo vrcApi_createNewAvatarMethod;
+        static MethodInfo vrcApi_updateAvatarImageMethod;
+        static MethodInfo namePatchTranspiler;
+        
         public static void Patch(Harmony harmony)
         {
-            var vrcApi_createNewAvatarMethod = GetMethodIncludingAsync(typeof(VRCApi), nameof(VRCApi.CreateNewAvatar));
-            var vrcApi_updateAvatarImageMethod = GetMethodIncludingAsync(typeof(VRCApi), nameof(VRCApi.UpdateAvatarImage));
-            var namePatchTranspiler = GetMethodIncludingAsync(typeof(AvatarThumbnailNamePatch), nameof(Transpiler));
+            vrcApi_createNewAvatarMethod = GetMethodIncludingAsync(typeof(VRCApi), nameof(VRCApi.CreateNewAvatar));
+            vrcApi_updateAvatarImageMethod = GetMethodIncludingAsync(typeof(VRCApi), nameof(VRCApi.UpdateAvatarImage));
+            namePatchTranspiler = GetMethodIncludingAsync(typeof(AvatarThumbnailNamePatch), nameof(Transpiler));
             
             Log($"Patching <b>{typeof(VRCApi).Name}:{nameof(VRCApi.CreateNewAvatar)}</b> to hide avatar names in thumbnails.");
-            harmony.Patch(vrcApi_createNewAvatarMethod, transpiler: new HarmonyMethod(namePatchTranspiler));
+            PatchInternal(harmony, vrcApi_createNewAvatarMethod, transpiler: new HarmonyMethod(namePatchTranspiler));
             
             Log($"Patching <b>{typeof(VRCApi).Name}:{nameof(VRCApi.UpdateAvatarImage)}</b> to hide avatar names in thumbnails.");
-            harmony.Patch(vrcApi_updateAvatarImageMethod, transpiler: new HarmonyMethod(namePatchTranspiler));
+            PatchInternal(harmony, vrcApi_updateAvatarImageMethod, transpiler: new HarmonyMethod(namePatchTranspiler));
+        }
+
+        public static void UnPatch(Harmony harmony)
+        {
+            Log($"UnPatching <b>{typeof(VRCApi).Name}:{nameof(VRCApi.CreateNewAvatar)}</b> to no longer hide avatar names in thumbnails.");
+            UnPatchInternal(harmony, vrcApi_createNewAvatarMethod, transpiler: new HarmonyMethod(namePatchTranspiler));
+            
+            Log($"UnPatching <b>{typeof(VRCApi).Name}:{nameof(VRCApi.UpdateAvatarImage)}</b> to no longer hide avatar names in thumbnails.");
+            UnPatchInternal(harmony, vrcApi_updateAvatarImageMethod, transpiler: new HarmonyMethod(namePatchTranspiler));
+        }
+
+        static void PatchInternal(Harmony harmony, MethodBase targetMethod, HarmonyMethod prefix = null, HarmonyMethod postfix = null, HarmonyMethod transpiler = null, HarmonyMethod finalizer = null)
+        {
+            if(harmony == null || targetMethod == null)
+            {
+                LogError("Failed. Target method to patch was not found.");
+                return;
+            }
+
+            harmony.Patch(targetMethod, prefix, postfix, transpiler, finalizer);
+        }
+
+        static void UnPatchInternal(Harmony harmony, MethodBase targetMethod, HarmonyMethod prefix = null, HarmonyMethod postfix = null, HarmonyMethod transpiler = null, HarmonyMethod finalizer = null)
+        {
+            if(harmony == null || targetMethod == null)
+            {
+                LogError("Failed. Target method to unpatch was not found.");
+                return;
+            }
+
+            if(prefix != null) harmony.Unpatch(targetMethod, prefix.method);
+            if(postfix != null) harmony.Unpatch(targetMethod, postfix.method);
+            if(transpiler != null) harmony.Unpatch(targetMethod, transpiler.method);
+            if(finalizer != null) harmony.Unpatch(targetMethod, finalizer.method);
         }
 
         public static string GetNameReplacement()
