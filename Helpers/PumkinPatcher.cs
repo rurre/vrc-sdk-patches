@@ -9,15 +9,33 @@ namespace Pumkin.VrcSdkPatches
     internal static class PumkinPatcher
     {
         const string HarmonyId = "Pumkin.VrcSdkPatches";
+
+        static Harmony Harmony
+        {
+            get
+            {
+                if(_harmony == null)
+                    _harmony = new Harmony(HarmonyId);
+                return _harmony;
+            }
+        }
+        static Harmony _harmony;
         
         [InitializeOnLoadMethod]
-        static void ApplyPatches()
+        static void Initialize()
         {
-            var harmony = new Harmony(HarmonyId);
+            PumkinPatcherSettings.LoadSettings();
+            PumkinPatcher.SetAvatarThumbnailPatchState(PumkinPatcherSettings.AnonymizeAvatarThumbnailNames);
             
-            AvatarThumbnailNamePatch.Patch(harmony);
-            
-            AssemblyReloadEvents.beforeAssemblyReload += () => { harmony.UnpatchAll(HarmonyId); };
+            AssemblyReloadEvents.beforeAssemblyReload += () => { Harmony.UnpatchAll(HarmonyId); };
+        }
+
+        internal static void SetAvatarThumbnailPatchState(bool enabled)
+        {
+            if(enabled)
+                AvatarThumbnailNamePatch.Patch(Harmony);
+            else
+                AvatarThumbnailNamePatch.UnPatch(Harmony);
         }
     }
 }

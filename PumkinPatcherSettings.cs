@@ -9,15 +9,14 @@ namespace Pumkin.VrcSdkPatches
     [Serializable]
     internal static class PumkinPatcherSettings
     {
-        static PumkinPatcherSettings()
-        {
-            LoadSettings();
-        }
-        
         public static bool AnonymizeAvatarThumbnailNames
         {
             get => _anonymizeAvatarThumbnailNames;
-            set => _anonymizeAvatarThumbnailNames = value;
+            set
+            {
+                _anonymizeAvatarThumbnailNames = value;
+                PumkinPatcher.SetAvatarThumbnailPatchState(value);
+            }
         }
         static bool _anonymizeAvatarThumbnailNames;
         

@@ -17,28 +17,32 @@ namespace Pumkin.VrcSdkPatches
 
         static MethodInfo vrcApi_createNewAvatarMethod;
         static MethodInfo vrcApi_updateAvatarImageMethod;
-        static MethodInfo namePatchTranspiler;
-        
-        public static void Patch(Harmony harmony)
+        static HarmonyMethod namePatchTranspilerHarmony;
+
+        static AvatarThumbnailNamePatch()
         {
             vrcApi_createNewAvatarMethod = GetMethodIncludingAsync(typeof(VRCApi), nameof(VRCApi.CreateNewAvatar));
             vrcApi_updateAvatarImageMethod = GetMethodIncludingAsync(typeof(VRCApi), nameof(VRCApi.UpdateAvatarImage));
-            namePatchTranspiler = GetMethodIncludingAsync(typeof(AvatarThumbnailNamePatch), nameof(Transpiler));
-            
+            var namePatchTranspiler = GetMethodIncludingAsync(typeof(AvatarThumbnailNamePatch), nameof(Transpiler));
+            namePatchTranspilerHarmony = new HarmonyMethod(namePatchTranspiler);
+        }
+
+        public static void Patch(Harmony harmony)
+        {
             Log($"Patching <b>{typeof(VRCApi).Name}:{nameof(VRCApi.CreateNewAvatar)}</b> to hide avatar names in thumbnails.");
-            PatchInternal(harmony, vrcApi_createNewAvatarMethod, transpiler: new HarmonyMethod(namePatchTranspiler));
+            PatchInternal(harmony, vrcApi_createNewAvatarMethod, transpiler: namePatchTranspilerHarmony);
             
             Log($"Patching <b>{typeof(VRCApi).Name}:{nameof(VRCApi.UpdateAvatarImage)}</b> to hide avatar names in thumbnails.");
-            PatchInternal(harmony, vrcApi_updateAvatarImageMethod, transpiler: new HarmonyMethod(namePatchTranspiler));
+            PatchInternal(harmony, vrcApi_updateAvatarImageMethod, transpiler: namePatchTranspilerHarmony);
         }
 
         public static void UnPatch(Harmony harmony)
         {
             Log($"UnPatching <b>{typeof(VRCApi).Name}:{nameof(VRCApi.CreateNewAvatar)}</b> to no longer hide avatar names in thumbnails.");
-            UnPatchInternal(harmony, vrcApi_createNewAvatarMethod, transpiler: new HarmonyMethod(namePatchTranspiler));
+            UnPatchInternal(harmony, vrcApi_createNewAvatarMethod, transpiler: namePatchTranspilerHarmony);
             
             Log($"UnPatching <b>{typeof(VRCApi).Name}:{nameof(VRCApi.UpdateAvatarImage)}</b> to no longer hide avatar names in thumbnails.");
-            UnPatchInternal(harmony, vrcApi_updateAvatarImageMethod, transpiler: new HarmonyMethod(namePatchTranspiler));
+            UnPatchInternal(harmony, vrcApi_updateAvatarImageMethod, transpiler: namePatchTranspilerHarmony);
         }
 
         static void PatchInternal(Harmony harmony, MethodBase targetMethod, HarmonyMethod prefix = null, HarmonyMethod postfix = null, HarmonyMethod transpiler = null, HarmonyMethod finalizer = null)
@@ -68,8 +72,17 @@ namespace Pumkin.VrcSdkPatches
 
         public static string GetNameReplacement()
         {
-            Log($"Replaced avatar thumbnail name with <b>{DefaultAvatarName}</b>.");
-            return DefaultAvatarName;
+            PumkinPatcherSettings.LoadSettings();
+            var names = PumkinPatcherSettings.ReplacementNames;
+            if(names?.Count == 0)
+            {
+                Log($"Replaced avatar thumbnail name with <b>{DefaultAvatarName}</b>.");
+                return DefaultAvatarName;
+            }
+
+            string newName = names[UnityEngine.Random.Range(0, names.Count)];
+            Log($"Replaced avatar thumbnail name with <b>{newName}</b>.");
+            return newName;
         }
 
         static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
@@ -127,7 +140,6 @@ namespace Pumkin.VrcSdkPatches
                     codes[getDataIndex - 1] = new CodeInstruction(OpCodes.Nop);
                     codes[getDataIndex] = new CodeInstruction(OpCodes.Nop);
                     codes[getDataNameIndex] = new CodeInstruction(OpCodes.Call, typeof(AvatarThumbnailNamePatch).GetMethod(nameof(GetNameReplacement)));
-                    Log("Success!");
                     return codes.AsEnumerable();
                 }
             }

@@ -10,7 +10,4 @@
             <ui:ListView header-title="Random Name Replacements" show-add-remove-footer="true" show-border="true" show-foldout-header="true" name="replacementNames" reorder-mode="Animated" reorderable="false" show-alternating-row-backgrounds="ContentOnly" class="margin-top" />
         </ui:VisualElement>
     </ui:VisualElement>
-    <ui:VisualElement style="flex-grow: 0;">
-        <ui:Button text="Apply" parse-escape-sequences="true" display-tooltip-when-elided="true" />
-    </ui:VisualElement>
 </ui:UXML>
