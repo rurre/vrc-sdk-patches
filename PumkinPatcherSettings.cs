@@ -25,7 +25,7 @@ namespace Pumkin.VrcSdkPatches
             get => _replacementNames;
             set => _replacementNames = value;
         }
-        static List<string> _replacementNames;
+        static List<string> _replacementNames = new List<string>();
 
         class ArrayWrapper { public string[] array = Array.Empty<string>(); }
 
