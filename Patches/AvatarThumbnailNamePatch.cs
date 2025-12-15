@@ -74,7 +74,7 @@ namespace Pumkin.VrcSdkPatches
         {
             PumkinPatcherSettings.LoadSettings();
             var names = PumkinPatcherSettings.ReplacementNames;
-            if(names?.Count == 0)
+            if(names == null || names.Count == 0)
             {
                 Log($"Replaced avatar thumbnail name with <b>{DefaultAvatarName}</b>.");
                 return DefaultAvatarName;

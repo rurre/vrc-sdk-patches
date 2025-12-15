@@ -43,7 +43,13 @@ namespace Pumkin.VrcSdkPatches
         {
             EditorPrefs.SetBool($"{Application.productName}:{nameof(AnonymizeAvatarThumbnailNames)}", _anonymizeAvatarThumbnailNames);
             
-            string replacementsJson = JsonUtility.ToJson(new ArrayWrapper() { array = _replacementNames.ToArray() });
+            // Sanitize names again just in case and remove nulls
+            var sanitizedNonNullNames = _replacementNames
+                .Where(x => !string.IsNullOrWhiteSpace(x))
+                .Select(StringSanitizer.RemoveInvalidFilenameChars)
+                .ToArray();
+            
+            string replacementsJson = JsonUtility.ToJson(new ArrayWrapper() { array = sanitizedNonNullNames });
             EditorPrefs.SetString($"{Application.productName}:{nameof(ReplacementNames)}", replacementsJson);
         }
     }

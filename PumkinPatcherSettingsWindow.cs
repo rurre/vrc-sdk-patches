@@ -37,17 +37,20 @@ namespace Pumkin.VrcSdkPatches
             
             var names = rootVisualElement.Q<ListView>("replacementNames");
             names.itemsSource = PumkinPatcherSettings.ReplacementNames;
-            names.makeItem = () => new TextField();
+            names.makeItem = () => new TextField() { isDelayed = true };
 
             names.bindItem = (ve, index) =>
             {
                 var textField = ve as TextField;
                 textField.SetValueWithoutNotify(PumkinPatcherSettings.ReplacementNames[index]);
-                textField.RegisterValueChangedCallback(evt => PumkinPatcherSettings.ReplacementNames[index] = evt.newValue);
+                textField.RegisterValueChangedCallback(evt =>
+                {
+                    PumkinPatcherSettings.ReplacementNames[index] = StringSanitizer.RemoveInvalidFilenameChars(evt.newValue);
+                });
             };
             names.unbindItem = (ve, index) =>
             {
-                ((TextField)ve).UnregisterValueChangedCallback(evt => PumkinPatcherSettings.ReplacementNames[index] = evt.newValue);
+                ((TextField)ve).UnregisterValueChangedCallback(evt => PumkinPatcherSettings.ReplacementNames[index] = StringSanitizer.RemoveInvalidFilenameChars(evt.newValue));
             };
         }
 
