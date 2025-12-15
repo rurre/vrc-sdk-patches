@@ -9,6 +9,6 @@
     "url": "https://github.com/rurre"
   },
   "vpmDependencies" : {
-	"com.vrchat.base" : "3.8.x"
+	"com.vrchat.base" : ">=3.9.x"
   }
 }
