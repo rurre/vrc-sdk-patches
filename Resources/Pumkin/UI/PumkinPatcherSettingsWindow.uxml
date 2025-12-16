@@ -7,7 +7,7 @@
         </ui:VisualElement>
         <ui:VisualElement class="vertical-toggle" style="flex-grow: 1;">
             <ui:Toggle text="Anonymize Avatar Thumbnail Names" name="anonymizeAvatarThumbnailNames" />
-            <ui:ListView header-title="Random Name Replacements" show-add-remove-footer="true" show-border="true" show-foldout-header="true" name="replacementNames" reorder-mode="Animated" reorderable="false" show-alternating-row-backgrounds="ContentOnly" class="margin-top" />
+            <ui:ListView header-title="Random Name Replacements" show-add-remove-footer="true" show-border="true" show-foldout-header="true" name="replacementNames" reorder-mode="Animated" reorderable="true" show-alternating-row-backgrounds="ContentOnly" class="margin-top" />
         </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>
