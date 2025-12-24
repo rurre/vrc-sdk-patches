@@ -22,9 +22,17 @@ namespace Pumkin.VrcSdkPatches
             var window = GetWindow<PumkinPatcherSettingsWindow>("Patcher Settings");
             window.Show();
         }
+        
+        void OnDestroy()
+        {
+            SaveSettings();
+        }
 
         void CreateGUI()
         {
+            EditorApplication.quitting -= SaveSettings;
+            EditorApplication.quitting += SaveSettings;
+            
             PumkinPatcherSettings.LoadSettings();
             
             var tree = Resources.Load<VisualTreeAsset>("Pumkin/UI/PumkinPatcherSettingsWindow");
@@ -54,7 +62,7 @@ namespace Pumkin.VrcSdkPatches
             };
         }
 
-        void OnDestroy()
+        void SaveSettings()
         {
             PumkinPatcherSettings.SaveSettings();
         }
