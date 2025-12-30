@@ -6,4 +6,6 @@ This patch automatically anonymizes the avatar thumbnail name, which is where ap
 The patch needs to be enabled in the settings before it'll do anything. You can access the settings at `Tools` > `Pumkin` > `VRC SDK Patches`.
 Settings include a list of names you can add for the patch to pick from at random. If no names are added, the avatar will be named `Avatar`.
 
+**⚠️ Please note that if someone is in the same instance as you, they will be able to see your real avatar name, both in VRC and VRCX! ⚠️**
+
 <img width="305" height="340" alt="image" src="https://github.com/user-attachments/assets/36b2fa1c-4465-4399-ae2a-33798c56aada" />
