@@ -9,3 +9,6 @@ Settings include a list of names you can add for the patch to pick from at rando
 **⚠️Please note that if someone is in the same instance as you, they will be able to see your real avatar name, both in VRCX and VRChat!⚠️**
 
 <img width="305" height="340" alt="image" src="https://github.com/user-attachments/assets/36b2fa1c-4465-4399-ae2a-33798c56aada" />
+
+### Auto Accept VRC SDK Copyright Agreement
+This patch automatically accepts the SDK agreement dialog when uploading an avatar (or world? haven't tested).
