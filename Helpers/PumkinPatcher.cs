@@ -1,8 +1,5 @@
 using HarmonyLib;
 using UnityEditor;
-using VRC.SDKBase.Editor.Api;
-using static Pumkin.VrcSdkPatches.PumkinPatcherLogger;
-using static Pumkin.VrcSdkPatches.ReflectionHelpers;
 
 namespace Pumkin.VrcSdkPatches
 {

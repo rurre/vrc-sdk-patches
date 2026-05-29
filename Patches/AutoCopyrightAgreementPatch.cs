@@ -24,14 +24,12 @@ namespace Pumkin.VrcSdkPatches
         {
             Log($"Patching <b>{nameof(VRCCopyrightAgreement)}:{nameof(VRCCopyrightAgreement.CheckCopyrightAgreement)}</b> to automatically accept content agreement dialog. You own all this content, right?");
             harmony.Patch(targetMethod, transpiler: new HarmonyMethod(transpilerMethod));
-            Log("Success!");
         }
 
         public static void UnPatch(Harmony harmony)
         {
             Log($"UnPatching <b>{nameof(VRCCopyrightAgreement)}:{nameof(VRCCopyrightAgreement.CheckCopyrightAgreement)}</b> to no longer automatically accept content agreement dialog.");
             harmony.Unpatch(targetMethod, transpilerMethod);
-            Log("Success!");
         }
 
         static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
