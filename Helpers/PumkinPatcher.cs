@@ -25,7 +25,7 @@ namespace Pumkin.VrcSdkPatches
         static void Initialize()
         {
             PumkinPatcherSettings.LoadSettings();
-            PumkinPatcher.SetAvatarThumbnailPatchState(PumkinPatcherSettings.AnonymizeAvatarThumbnailNames);
+            SetAvatarThumbnailPatchState(PumkinPatcherSettings.AnonymizeAvatarThumbnailNames);
             
             AssemblyReloadEvents.beforeAssemblyReload += () => { Harmony.UnpatchAll(HarmonyId); };
         }
@@ -36,6 +36,14 @@ namespace Pumkin.VrcSdkPatches
                 AvatarThumbnailNamePatch.Patch(Harmony);
             else
                 AvatarThumbnailNamePatch.UnPatch(Harmony);
+        }
+
+        internal static void SetAutoAcceptCopyrightDialogPatchState(bool enabled)
+        {
+            if(enabled)
+                AutoCopyrightAgreementPatch.Patch(Harmony);
+            else
+                AutoCopyrightAgreementPatch.UnPatch(Harmony);
         }
     }
 }

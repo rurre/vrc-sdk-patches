@@ -29,19 +29,19 @@ namespace Pumkin.VrcSdkPatches
 
         public static void Patch(Harmony harmony)
         {
-            Log($"Patching <b>{typeof(VRCApi).Name}:{nameof(VRCApi.CreateNewAvatar)}</b> to hide avatar names in thumbnails.");
+            Log($"Patching <b>{nameof(VRCApi)}:{nameof(VRCApi.CreateNewAvatar)}</b> to hide avatar names in thumbnails.");
             PatchInternal(harmony, vrcApi_createNewAvatarMethod, transpiler: namePatchTranspilerHarmony);
             
-            Log($"Patching <b>{typeof(VRCApi).Name}:{nameof(VRCApi.UpdateAvatarImage)}</b> to hide avatar names in thumbnails.");
+            Log($"Patching <b>{nameof(VRCApi)}:{nameof(VRCApi.UpdateAvatarImage)}</b> to hide avatar names in thumbnails.");
             PatchInternal(harmony, vrcApi_updateAvatarImageMethod, transpiler: namePatchTranspilerHarmony);
         }
 
         public static void UnPatch(Harmony harmony)
         {
-            Log($"UnPatching <b>{typeof(VRCApi).Name}:{nameof(VRCApi.CreateNewAvatar)}</b> to no longer hide avatar names in thumbnails.");
+            Log($"UnPatching <b>{nameof(VRCApi)}:{nameof(VRCApi.CreateNewAvatar)}</b> to no longer hide avatar names in thumbnails.");
             UnPatchInternal(harmony, vrcApi_createNewAvatarMethod, transpiler: namePatchTranspilerHarmony);
             
-            Log($"UnPatching <b>{typeof(VRCApi).Name}:{nameof(VRCApi.UpdateAvatarImage)}</b> to no longer hide avatar names in thumbnails.");
+            Log($"UnPatching <b>{nameof(VRCApi)}:{nameof(VRCApi.UpdateAvatarImage)}</b> to no longer hide avatar names in thumbnails.");
             UnPatchInternal(harmony, vrcApi_updateAvatarImageMethod, transpiler: namePatchTranspilerHarmony);
         }
 
@@ -60,8 +60,7 @@ namespace Pumkin.VrcSdkPatches
         {
             if(harmony == null || targetMethod == null)
             {
-                LogError("Failed. Target method to unpatch was not found.");
-                return;
+                throw new PatchFailException("Failed. Target method to unpatch was not found.");
             }
 
             if(prefix != null) harmony.Unpatch(targetMethod, prefix.method);
@@ -144,8 +143,7 @@ namespace Pumkin.VrcSdkPatches
                 }
             }
             
-            LogError("Failed. Could not find location in code to patch.");
-            return codes.AsEnumerable();
+            throw new PatchFailException("Could not find location in code to patch.");
         }
     }
 }

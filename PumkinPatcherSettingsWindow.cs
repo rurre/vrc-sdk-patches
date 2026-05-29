@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
-using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
 using static Pumkin.VrcSdkPatches.PumkinPatcherLogger;
@@ -13,6 +12,7 @@ namespace Pumkin.VrcSdkPatches
     public class PumkinPatcherSettingsWindow : EditorWindow
     {
         const string PackageJsonGuid = "8021f47c8e48e414c8afc59ee31cc8c5";
+        const string CopyrightDialogAgreementText = "By enabling this option you agree that, I, Pumkin - the creator of this patch, cannot be held accountable for any of the content you upload to VRChat in any way.\n\nIn addition, per VRChat's terms, you certify that you have the necessary rights to all the future content you upload and that you will not infringe on any third-party legal or intellectual property rights.";
         
         [Serializable] class VersionWrapper { public string version; }
 
@@ -28,6 +28,8 @@ namespace Pumkin.VrcSdkPatches
             SaveSettings();
         }
 
+        Toggle copyrightDialog;
+
         void CreateGUI()
         {
             EditorApplication.quitting -= SaveSettings;
@@ -39,6 +41,11 @@ namespace Pumkin.VrcSdkPatches
             tree.CloneTree(rootVisualElement);
             
             rootVisualElement.Q<Label>("version").text = $"v{GetPackageVersion()}";
+
+            copyrightDialog = rootVisualElement.Q<Toggle>("autoAcceptCopyrightDialog");
+            copyrightDialog.SetValueWithoutNotify(PumkinPatcherSettings.AutoAcceptCopyrightDialog);
+            copyrightDialog.RegisterValueChangedCallback(HandleCopyrightDialogSetting);
+            
             var anonymizeNames = rootVisualElement.Q<Toggle>("anonymizeAvatarThumbnailNames");
             anonymizeNames.SetValueWithoutNotify(PumkinPatcherSettings.AnonymizeAvatarThumbnailNames);
             anonymizeNames.RegisterValueChangedCallback(evt => PumkinPatcherSettings.AnonymizeAvatarThumbnailNames = evt.newValue);
@@ -60,6 +67,19 @@ namespace Pumkin.VrcSdkPatches
             {
                 ((TextField)ve).UnregisterValueChangedCallback(evt => PumkinPatcherSettings.ReplacementNames[index] = StringSanitizer.RemoveInvalidFilenameChars(evt.newValue));
             };
+        }
+
+        void HandleCopyrightDialogSetting(ChangeEvent<bool> evt)
+        {
+            if(evt.newValue)
+            {
+                if(EditorUtility.DisplayDialog("Copyright ownership agreement", CopyrightDialogAgreementText, "I Agree"))
+                    PumkinPatcherSettings.AutoAcceptCopyrightDialog = true;
+                else
+                    copyrightDialog.SetValueWithoutNotify(false);
+            }
+            else
+                PumkinPatcherSettings.AutoAcceptCopyrightDialog = false;
         }
 
         void SaveSettings()

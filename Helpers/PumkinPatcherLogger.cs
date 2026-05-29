@@ -6,9 +6,9 @@ namespace Pumkin.VrcSdkPatches
     {
         const string LogPrefix = "<b>Pumkin's SDK Patches</b>";
         
-        internal static void Log(string message) => Debug.Log($"{LogPrefix}: {message}");
-        internal static void LogError(string message) => Debug.LogError($"{LogPrefix}: {message}");
-        internal static void LogWarning(string message) => Debug.LogWarning($"{LogPrefix}: {message}");
+        [HideInCallstack] internal static void Log(string message) => Debug.Log($"{LogPrefix}: {message}");
+        [HideInCallstack] internal static void LogError(string message) => Debug.LogError($"{LogPrefix}: {message}");
+        [HideInCallstack] internal static void LogWarning(string message) => Debug.LogWarning($"{LogPrefix}: {message}");
         
     }
 }

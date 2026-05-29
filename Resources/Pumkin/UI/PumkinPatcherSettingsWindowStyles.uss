@@ -13,3 +13,16 @@
 .margin-top {
     margin-top: 4px;
 }
+
+.group {
+    padding-bottom: 4px;
+    margin-bottom: 4px;
+    padding-top: 4px;
+    background-color: rgba(0, 0, 0, 0.11);
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+    border-bottom-left-radius: 3px;
+    padding-right: 2px;
+    padding-left: 2px;
+}

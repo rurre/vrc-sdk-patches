@@ -27,21 +27,34 @@ namespace Pumkin.VrcSdkPatches
         }
         static List<string> _replacementNames = new List<string>();
 
+        public static bool AutoAcceptCopyrightDialog
+        {
+            get => _autoAcceptCopyrightDialog;
+            set
+            {
+                _autoAcceptCopyrightDialog = value;
+                PumkinPatcher.SetAutoAcceptCopyrightDialogPatchState(value);
+            }
+        }
+        static bool _autoAcceptCopyrightDialog;
+
         class ArrayWrapper { public string[] array = Array.Empty<string>(); }
 
         public static void LoadSettings()
         {
             _anonymizeAvatarThumbnailNames = EditorPrefs.GetBool($"{Application.productName}:{nameof(AnonymizeAvatarThumbnailNames)}", false);
+            _autoAcceptCopyrightDialog = EditorPrefs.GetBool($"{Application.productName}:{nameof(AutoAcceptCopyrightDialog)}", false);
             
             string replacementJson = EditorPrefs.GetString($"{Application.productName}:{nameof(ReplacementNames)}", "{\"array\":[]}");
             var arrayWrapper = new ArrayWrapper();
             JsonUtility.FromJsonOverwrite(replacementJson, arrayWrapper);
-            _replacementNames = arrayWrapper?.array?.Length > 0 ? arrayWrapper?.array?.ToList() : new List<string>();
+            _replacementNames = arrayWrapper.array?.Length > 0 ? arrayWrapper.array?.ToList() : new List<string>();
         }
         
         public static void SaveSettings()
         {
             EditorPrefs.SetBool($"{Application.productName}:{nameof(AnonymizeAvatarThumbnailNames)}", _anonymizeAvatarThumbnailNames);
+            EditorPrefs.SetBool($"{Application.productName}:{nameof(AutoAcceptCopyrightDialog)}", _autoAcceptCopyrightDialog);
             
             // Sanitize names again just in case and remove nulls
             var sanitizedNonNullNames = _replacementNames
