@@ -1,4 +1,9 @@
-This repository includes a bunch of VRC SDK Harmony patches. 
+# Pumkin's VRChat SDK Patches
+This repository includes a bunch of my VRChat SDK Harmony patches.
+
+> [!NOTE]
+> To install, if using VCC, find my listing [here](https://rurre.github.io/vpm), and info how to use it [here](https://github.com/rurre/vpm#readme).  
+> Alternatively, download the latest unity package [here](https://github.com/rurre/vrc-sdk-patches/releases/latest) and import it into your project as normal.
 
 <img alt="Patch settings window" src="https://github.com/user-attachments/assets/e3edb07d-8db4-49bc-ae0d-49ec05e7d050" />  
 
