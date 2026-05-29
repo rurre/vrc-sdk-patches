@@ -4,7 +4,7 @@
   "version": "1.1.0",
   "unity": "2022.3",
   "description": "A couple of harmony patches for the VRC SDK",
-  "changelogUrl": "CHANGELOG.md",
+  "changelogUrl": "https://github.com/rurre/vrc-sdk-patches/blob/main/CHANGELOG.md#v110",
   "author": {
     "name": "Pumkin",
     "url": "https://github.com/rurre"
