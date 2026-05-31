@@ -1,9 +1,8 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
+using VRC.SDKBase;
 using static Pumkin.VrcSdkPatches.PumkinPatcherLogger;
 
 namespace Pumkin.VrcSdkPatches
@@ -12,7 +11,7 @@ namespace Pumkin.VrcSdkPatches
     public class PumkinPatcherSettingsWindow : EditorWindow
     {
         const string PackageJsonGuid = "8021f47c8e48e414c8afc59ee31cc8c5";
-        const string CopyrightDialogAgreementText = "By enabling this option you agree that, I, Pumkin - the creator of this patch, cannot be held accountable for any of the content you upload to VRChat in any way.\n\nIn addition, per VRChat's terms, you certify that you have the necessary rights to all the future content you upload and that you will not infringe on any third-party legal or intellectual property rights.";
+        readonly string CopyrightDialogAgreementText = "By enabling this option you agree that, I, Pumkin - the creator of this patch, cannot be held accountable for any of the content you upload to VRChat in any way.\n\nIn addition, I authorise this patch to sign the following VRChat agreement on my behalf, for every future upload while it is active:\n\n" + VRCCopyrightAgreement.AgreementText;
         
         [Serializable] class VersionWrapper { public string version; }
 
@@ -25,8 +24,11 @@ namespace Pumkin.VrcSdkPatches
         
         void OnDestroy()
         {
+            EditorApplication.quitting -= SaveSettings;
+            AssemblyReloadEvents.beforeAssemblyReload -= SaveSettings;
             SaveSettings();
         }
+
 
         Toggle copyrightDialog;
 
@@ -34,6 +36,8 @@ namespace Pumkin.VrcSdkPatches
         {
             EditorApplication.quitting -= SaveSettings;
             EditorApplication.quitting += SaveSettings;
+            AssemblyReloadEvents.beforeAssemblyReload -= SaveSettings;
+            AssemblyReloadEvents.beforeAssemblyReload += SaveSettings;
             
             PumkinPatcherSettings.LoadSettings();
             
@@ -73,7 +77,7 @@ namespace Pumkin.VrcSdkPatches
         {
             if(evt.newValue)
             {
-                if(EditorUtility.DisplayDialog("Copyright ownership agreement", CopyrightDialogAgreementText, "I Agree"))
+                if(EditorUtility.DisplayDialog("Copyright ownership agreement", CopyrightDialogAgreementText, "OK", "No"))
                     PumkinPatcherSettings.AutoAcceptCopyrightDialog = true;
                 else
                     copyrightDialog.SetValueWithoutNotify(false);
