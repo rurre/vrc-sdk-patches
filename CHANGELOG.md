@@ -1,3 +1,8 @@
+## v1.1.2
+### Auto Accept Copyright Dialog
+- Updated copyright agreement popup.
+---
+
 ## v1.1.1
 ### General
 - Fixed settings not saving if scripts reloaded when settings window was open.
