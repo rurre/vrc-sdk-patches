@@ -39,7 +39,7 @@ namespace Pumkin.VrcSdkPatches
         }
         static bool _autoAcceptCopyrightDialog;
 
-        const int LatestAgreementVersion = 1;
+        const int LatestAgreementVersion = 2;
         
         static int LastAgreedToAgreementVersion
         {

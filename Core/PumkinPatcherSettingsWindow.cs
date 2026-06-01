@@ -11,7 +11,7 @@ namespace Pumkin.VrcSdkPatches
     public class PumkinPatcherSettingsWindow : EditorWindow
     {
         const string PackageJsonGuid = "8021f47c8e48e414c8afc59ee31cc8c5";
-        readonly string CopyrightDialogAgreementText = "By enabling this option you agree that, I, Pumkin - the creator of this patch, cannot be held accountable for any of the content you upload to VRChat in any way.\n\nIn addition, I authorise this patch to sign the following VRChat agreement on my behalf, for every future upload while it is active:\n\n" + VRCCopyrightAgreement.AgreementText;
+        readonly string CopyrightDialogAgreementText = "By enabling this option I agree that Pumkin - the creator of this patch, cannot be held accountable for any of the content I upload to VRChat in any way.\n\nIn addition, I authorise this patch to sign the following VRChat agreement on my behalf, for every future upload while it is active:\n\n" + VRCCopyrightAgreement.AgreementText;
         
         [Serializable] class VersionWrapper { public string version; }
 
