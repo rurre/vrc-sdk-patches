@@ -1,3 +1,8 @@
+## v1.1.3
+### Auto Accept Copyright Dialog
+- Fixed patch not enabling itself after Unity restart.
+---
+
 ## v1.1.2
 ### Auto Accept Copyright Dialog
 - Updated copyright agreement popup.

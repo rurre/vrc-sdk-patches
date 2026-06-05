@@ -23,6 +23,7 @@ namespace Pumkin.VrcSdkPatches
         {
             PumkinPatcherSettings.LoadSettings();
             SetAvatarThumbnailPatchState(PumkinPatcherSettings.AnonymizeAvatarThumbnailNames);
+            SetAutoAcceptCopyrightDialogPatchState(PumkinPatcherSettings.AutoAcceptCopyrightDialog);
             
             AssemblyReloadEvents.beforeAssemblyReload += () => { Harmony.UnpatchAll(HarmonyId); };
         }

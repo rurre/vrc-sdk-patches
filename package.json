@@ -1,10 +1,10 @@
 {
   "name": "io.github.rurre.vrc-sdk-patches",
   "displayName": "Pumkin's VRC SDK Patches",
-  "version": "1.1.2",
+  "version": "1.1.3",
   "unity": "2022.3",
   "description": "A couple of harmony patches for the VRC SDK",
-  "changelogUrl": "https://github.com/rurre/vrc-sdk-patches/blob/main/CHANGELOG.md#v112",
+  "changelogUrl": "https://github.com/rurre/vrc-sdk-patches/blob/main/CHANGELOG.md#v113",
   "author": {
     "name": "Pumkin",
     "url": "https://github.com/rurre"
