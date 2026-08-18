@@ -71,6 +71,10 @@ namespace Pumkin.VrcSdkPatches
             {
                 ((TextField)ve).UnregisterValueChangedCallback(evt => PumkinPatcherSettings.ReplacementNames[index] = StringSanitizer.RemoveInvalidFilenameChars(evt.newValue));
             };
+            
+            var addOpenTestAvatarButton = rootVisualElement.Q<Toggle>("addOpenTestAvatarFolder");
+            addOpenTestAvatarButton.SetValueWithoutNotify(PumkinPatcherSettings.AddOpenTestAvatarButton);
+            addOpenTestAvatarButton.RegisterValueChangedCallback(evt => PumkinPatcherSettings.AddOpenTestAvatarButton = evt.newValue);
         }
 
         void HandleCopyrightDialogSetting(ChangeEvent<bool> evt)

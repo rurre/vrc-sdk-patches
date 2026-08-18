@@ -1,3 +1,7 @@
+## v1.1.4
+### Add Open Test Avatar Folder Button to Built & Test
+- New patch to add a 'Open Test Avatar Folder' button to the Build & Test build succeeded popup. 
+
 ## v1.1.3
 ### Auto Accept Copyright Dialog
 - Fixed patch not enabling itself after Unity restart.

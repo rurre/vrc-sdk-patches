@@ -41,6 +41,17 @@ namespace Pumkin.VrcSdkPatches
 
         const int LatestAgreementVersion = 2;
         
+        public static bool AddOpenTestAvatarButton
+        {
+            get => _addOpenTestAvatarButton;
+            set
+            {
+                _addOpenTestAvatarButton = value;
+                PumkinPatcher.SetAddOpenTestAvatarButtonState(value);
+            }
+        }
+        static bool _addOpenTestAvatarButton;
+        
         static int LastAgreedToAgreementVersion
         {
             get => _lastAgreedToAgreedToAgreementVersion;
@@ -72,11 +83,14 @@ namespace Pumkin.VrcSdkPatches
                         "OK");
                 }
             }
+            
+            _addOpenTestAvatarButton = EditorPrefs.GetBool($"{Application.productName}:{nameof(AddOpenTestAvatarButton)}", false);
         }
         
         public static void SaveSettings()
         {
             EditorPrefs.SetBool($"{Application.productName}:{nameof(AnonymizeAvatarThumbnailNames)}", _anonymizeAvatarThumbnailNames);
+            EditorPrefs.SetBool($"{Application.productName}:{nameof(AddOpenTestAvatarButton)}", _addOpenTestAvatarButton);
             EditorPrefs.SetBool($"{Application.productName}:{nameof(AutoAcceptCopyrightDialog)}", _autoAcceptCopyrightDialog);
             
             if(AutoAcceptCopyrightDialog)

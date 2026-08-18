@@ -4,7 +4,6 @@ using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
 using HarmonyLib;
-using UnityEngine;
 using VRC.SDKBase.Editor.Api;
 using static Pumkin.VrcSdkPatches.PumkinPatcherLogger;
 using static Pumkin.VrcSdkPatches.ReflectionHelpers;

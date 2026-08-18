@@ -2,7 +2,8 @@
     "name": "Pumkin.VrcSdkPatches",
     "rootNamespace": "Pumkin.VrcSdkPatches",
     "references": [
-        "GUID:6e9c6119ac4eb334284fb7b4bc6d1f05"
+        "GUID:6e9c6119ac4eb334284fb7b4bc6d1f05",
+        "GUID:b906909fcc54f634db50f2cad0f988d9"
     ],
     "includePlatforms": [
         "Editor"

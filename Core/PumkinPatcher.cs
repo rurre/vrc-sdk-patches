@@ -24,10 +24,12 @@ namespace Pumkin.VrcSdkPatches
             PumkinPatcherSettings.LoadSettings();
             SetAvatarThumbnailPatchState(PumkinPatcherSettings.AnonymizeAvatarThumbnailNames);
             SetAutoAcceptCopyrightDialogPatchState(PumkinPatcherSettings.AutoAcceptCopyrightDialog);
+            SetAddOpenTestAvatarButtonState(PumkinPatcherSettings.AddOpenTestAvatarButton);
             
             AssemblyReloadEvents.beforeAssemblyReload += () => { Harmony.UnpatchAll(HarmonyId); };
         }
 
+        // TODO: Make these non static classes and stop copy pasting code
         internal static void SetAvatarThumbnailPatchState(bool enabled)
         {
             if(enabled)
@@ -42,6 +44,14 @@ namespace Pumkin.VrcSdkPatches
                 AutoCopyrightAgreementPatch.Patch(Harmony);
             else
                 AutoCopyrightAgreementPatch.UnPatch(Harmony);
+        }
+
+        internal static void SetAddOpenTestAvatarButtonState(bool enabled)
+        {
+            if(enabled)
+                AddOpenTestAvatarButtonPatch.Patch(Harmony);
+            else
+                AddOpenTestAvatarButtonPatch.UnPatch(Harmony);
         }
     }
 }
