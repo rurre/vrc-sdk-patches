@@ -26,3 +26,7 @@ This patch automatically accepts the SDK agreement dialog when uploading an avat
 
 > [!WARNING]
 > Care has been taken to not modify how anything works on VRC's end but still, use at your own discretion and risk.  
+
+### Add Open Test Avatar Folder Button to Build & Test
+This patch adds a button to open test avatar folder to the build & test success dialog.
+<img width="515" height="178" alt="image" src="https://github.com/user-attachments/assets/7f498655-4dab-42a0-bf21-46018bc32b83" />
